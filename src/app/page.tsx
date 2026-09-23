@@ -1,10 +1,13 @@
+import { CTA } from "@/components/landing/cta";
+import { Features } from "@/components/landing/features";
 import { Hero } from "@/components/landing/hero";
 import { Pricing } from "@/components/landing/pricing";
+import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteHeader } from "@/components/landing/site-header";
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen flex-1 flex-col bg-white">
+    <div className="relative flex min-h-screen flex-1 flex-col bg-background">
       <div className="relative">
         <div
           aria-hidden="true"
@@ -31,7 +34,10 @@ export default function Home() {
         </div>
       </div>
 
+      <Features />
       <Pricing />
+      <CTA />
+      <SiteFooter />
     </div>
   );
 }

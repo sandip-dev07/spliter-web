@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import {
   Check,
   ChevronsRight,
@@ -8,7 +9,6 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "cn";
 
 type Plan = {
   name: string;
@@ -73,7 +73,9 @@ function PlanCard({ plan }: { plan: Plan }) {
     <div className="flex flex-1 flex-col">
       {/* <Icon className="size-11 text-zinc-900" strokeWidth={1.8} /> */}
 
-      <h3 className={cn("mt-6 text-lg font-medium", !plan.featured && "mt-10")}>{plan.name}</h3>
+      <h3 className={cn("mt-6 text-lg font-medium", !plan.featured && "mt-10")}>
+        {plan.name}
+      </h3>
       <p className="mt-1 text-sm text-zinc-500">{plan.tagline}</p>
 
       <div className="mt-5 flex items-center gap-2">
@@ -153,7 +155,7 @@ export function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative bg-white px-4 py-24 sm:px-6 lg:px-8 lg:py-32"
+      className="relative scroll-mt-20 bg-background px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
       <div className="mx-auto w-full max-w-5xl">
         <div className="flex flex-col items-center text-center">
