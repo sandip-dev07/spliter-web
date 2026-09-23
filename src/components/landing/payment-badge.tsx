@@ -30,7 +30,7 @@ export function PaymentBadge({ className }: { className?: string }) {
               alt={logo.alt}
               width={18}
               height={18}
-              className="size-[19px] select-none"
+              className="size-4.75 select-none"
             />
           </span>
         ))}
