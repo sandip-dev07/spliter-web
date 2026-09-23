@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "cn";
+
 import {
   ArrowLeftRight,
   BellRing,
@@ -6,7 +9,9 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
+import { EASE, Reveal } from "./reveal";
 
 const DOTS: React.CSSProperties = {
   backgroundImage:
@@ -25,25 +30,52 @@ const STRIPES: React.CSSProperties = {
     "repeating-linear-gradient(-45deg, rgba(0,0,0,0.06) 0 6px, transparent 6px 12px)",
 };
 
+const rowVariants = {
+  rest: { x: 0 },
+  hover: { x: 6 },
+};
+
+const popVariants = {
+  rest: { scale: 1 },
+  hover: { scale: 1.12 },
+};
+
+const bellVariants = {
+  rest: { rotate: 0 },
+  hover: { rotate: [0, -18, 14, -8, 0], transition: { duration: 0.6 } },
+};
+
+const barVariants = {
+  rest: { scaleY: 1 },
+  hover: { scaleY: 1.1 },
+};
+
 function Tile({
   className,
   decor,
+  delay = 0,
   children,
 }: {
   className?: string;
   decor?: React.ReactNode;
+  delay?: number;
   children: React.ReactNode;
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
+      whileHover="hover"
       className={cn(
-        "relative flex flex-col overflow-hidden rounded-[28px] border bg-zinc-50 p-6 ",
+        "group relative flex flex-col overflow-hidden rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-900/5",
         className,
       )}
     >
       {decor}
       <div className="relative flex flex-1 flex-col">{children}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -58,7 +90,7 @@ function TileHeader({
 }) {
   return (
     <div>
-      <div className="flex size-10 items-center justify-center rounded-xl bg-zinc-100 text-[#18C595]/70">
+      <div className="flex size-10 items-center justify-center rounded-xl bg-zinc-100 text-[#18C595]/70 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
         <Icon className="size-5" strokeWidth={2.2} />
       </div>
       <h3 className="mt-4 text-lg font-medium text-zinc-900">{title}</h3>
@@ -105,22 +137,25 @@ export function Features() {
       className="relative scroll-mt-20 bg-background px-4 mt-16 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
       <div className="mx-auto w-full max-w-5xl">
-        <div className="flex flex-col items-center text-center">
-          <span className="text-sm font-medium tracking-wide text-[#18C595] uppercase">
-            Features
-          </span>
-          <h2 className="font-albra mt-4 text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl">
-            Everything groups need
-          </h2>
-          <p className="mt-4 max-w-lg text-base leading-7 text-primary/60">
-            Split bills, track who owes whom, and settle up over UPI — all in
-            one place.
-          </p>
-        </div>
+        <Reveal>
+          <div className="flex flex-col items-center text-center">
+            <span className="text-sm font-medium tracking-wide text-[#18C595] uppercase">
+              Features
+            </span>
+            <h2 className="font-albra mt-4 text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl">
+              Everything groups need
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-7 text-primary/60">
+              Split bills, track who owes whom, and settle up over UPI — all in
+              one place.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-6">
           <Tile
             className="lg:col-span-4"
+            delay={0}
             decor={
               <>
                 <div
@@ -158,9 +193,16 @@ export function Features() {
               <p className="px-1 pb-1 text-xs font-medium tracking-wide text-zinc-400 uppercase">
                 Goa Trip · 4 friends
               </p>
-              {BALANCES.map((row) => (
-                <div
+              {BALANCES.map((row, i) => (
+                <motion.div
                   key={row.name}
+                  variants={rowVariants}
+                  transition={{
+                    delay: i * 0.06,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                  }}
                   className="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 ring-1 ring-zinc-200/70"
                 >
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-white ring-1 ring-zinc-200">
@@ -181,7 +223,7 @@ export function Features() {
                   <span className="ml-auto text-sm font-medium text-zinc-900">
                     {row.amount}
                   </span>
-                </div>
+                </motion.div>
               ))}
               <div className="flex items-center gap-2 rounded-xl bg-[#18C595]/10 px-3 py-2.5">
                 <span className="size-1.5 rounded-full bg-[#18C595]" />
@@ -194,6 +236,7 @@ export function Features() {
 
           <Tile
             className="lg:col-span-2"
+            delay={0.08}
             decor={
               <>
                 <div
@@ -224,9 +267,16 @@ export function Features() {
                 { src: "/icons/icons8-phone-pe-48.png", alt: "PhonePe" },
                 { src: "/icons/icons8-google-logo-48.png", alt: "Google Pay" },
                 { src: "/icons/icons8-paytm-48.png", alt: "Paytm" },
-              ].map((logo) => (
-                <span
+              ].map((logo, i) => (
+                <motion.span
                   key={logo.alt}
+                  variants={popVariants}
+                  transition={{
+                    delay: i * 0.07,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 15,
+                  }}
                   className="flex size-11 items-center justify-center rounded-full bg-white ring-1 ring-zinc-200"
                 >
                   <Image
@@ -236,7 +286,7 @@ export function Features() {
                     height={22}
                     className="size-[22px] select-none"
                   />
-                </span>
+                </motion.span>
               ))}
             </div>
             <div className="mt-4 flex items-center justify-between rounded-xl bg-zinc-900 px-4 py-3">
@@ -251,6 +301,7 @@ export function Features() {
 
           <Tile
             className="lg:col-span-2"
+            delay={0.16}
             decor={
               <div
                 aria-hidden="true"
@@ -272,8 +323,15 @@ export function Features() {
             />
             <div className="mt-6 flex gap-1.5 rounded-xl bg-zinc-100 p-1">
               {["Equal", "%", "Shares"].map((mode, i) => (
-                <span
+                <motion.span
                   key={mode}
+                  variants={popVariants}
+                  transition={{
+                    delay: i * 0.07,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 15,
+                  }}
                   className={cn(
                     "flex-1 rounded-lg px-2 py-1.5 text-center text-xs font-medium",
                     i === 0
@@ -282,7 +340,7 @@ export function Features() {
                   )}
                 >
                   {mode}
-                </span>
+                </motion.span>
               ))}
             </div>
             <div className="mt-2 flex items-center justify-between px-1 text-sm">
@@ -293,6 +351,7 @@ export function Features() {
 
           <Tile
             className="lg:col-span-2"
+            delay={0.24}
             decor={
               <>
                 <div
@@ -312,19 +371,32 @@ export function Features() {
               title="Gentle reminders"
               description="Nudge late payers without the awkward chat."
             />
-            <div className="mt-6 flex items-start gap-3 rounded-xl bg-white p-3 ring-1 ring-zinc-200/70 backdrop-blur">
+            <motion.div
+              variants={rowVariants}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              className="mt-6 flex items-start gap-3 rounded-xl bg-white p-3 ring-1 ring-zinc-200/70 backdrop-blur"
+            >
               <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#18C595]/15">
-                <BellRing className="size-4 text-[#18C595]" strokeWidth={2.2} />
+                <motion.span
+                  variants={bellVariants}
+                  className="flex items-center justify-center"
+                >
+                  <BellRing
+                    className="size-4 text-[#18C595]"
+                    strokeWidth={2.2}
+                  />
+                </motion.span>
               </span>
               <div className="text-sm">
                 <p className="font-medium text-zinc-900">Nudge sent to Rohan</p>
                 <p className="mt-0.5 text-zinc-500">₹860 · due in 2 days</p>
               </div>
-            </div>
+            </motion.div>
           </Tile>
 
           <Tile
             className="lg:col-span-2"
+            delay={0.32}
             decor={
               <>
                 <div
@@ -349,10 +421,17 @@ export function Features() {
               description="See where the group's money actually goes."
             />
             <div className="mt-6 flex h-24 items-end gap-1.5 rounded-xl bg-white p-3 ring-1 ring-zinc-200/70 backdrop-blur">
-              {BARS.map((bar) => (
-                <div
+              {BARS.map((bar, i) => (
+                <motion.div
                   key={bar.month}
-                  style={{ height: `${bar.value}%` }}
+                  variants={barVariants}
+                  transition={{
+                    delay: i * 0.05,
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                  }}
+                  style={{ height: `${bar.value}%`, transformOrigin: "bottom" }}
                   className={cn(
                     "flex-1 rounded-md",
                     bar.month === "Jun" ? "bg-[#18C595]" : "bg-zinc-200",

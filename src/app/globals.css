@@ -144,3 +144,9 @@
 .animate-float-soft {
   animation: float-soft 5s ease-in-out infinite;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FaGooglePlay } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "./reveal";
 
 export function CTA() {
   return (
@@ -8,7 +9,8 @@ export function CTA() {
       id="download"
       className="relative scroll-mt-20 bg-background px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
-      <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[32px] bg-[#f8fafc]">
+      <Reveal className="mx-auto w-full max-w-5xl">
+        <div className="relative overflow-hidden rounded-[32px] bg-[#f8fafc]">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-0"
@@ -48,10 +50,11 @@ export function CTA() {
                 sizes="(max-width: 640px) 240px, 288px"
                 className="relative -mb-24 h-auto w-full select-none mix-blend-screen"
               />
-            </div>
           </div>
         </div>
-      </div>
+        </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

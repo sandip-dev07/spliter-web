@@ -1,5 +1,6 @@
 import { Play } from "lucide-react";
 import Image from "next/image";
+import { Reveal } from "./reveal";
 
 const COLUMNS: { heading: string; links: { label: string; href: string }[] }[] =
   [
@@ -89,7 +90,7 @@ const SOCIALS = [
 export function SiteFooter() {
   return (
     <footer className="relative overflow-hidden bg-background">
-      <div className="mx-auto w-full max-w-5xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+      <Reveal className="mx-auto w-full max-w-5xl px-4 pt-12 sm:px-6 lg:px-8 lg:pt-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_1.3fr]">
           {COLUMNS.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
@@ -159,7 +160,7 @@ export function SiteFooter() {
           <span>© 2026 Splitr. All rights reserved.</span>
           <span>Made for India</span>
         </div>
-      </div>
+      </Reveal>
 
       <div aria-hidden="true" className="pointer-events-none select-none">
         <p className="font-albra -mb-[0.23em] text-center text-[24vw] leading-none font-semibold tracking-tight text-zinc-900/[0.05] lg:text-[13rem]">

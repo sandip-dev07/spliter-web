@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "cn";
 import {
   Check,
@@ -8,7 +10,9 @@ import {
   Users,
   Zap,
 } from "lucide-react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { EASE, Reveal } from "./reveal";
 
 type Plan = {
   name: string;
@@ -68,7 +72,7 @@ const PLANS: Plan[] = [
   },
 ];
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, index }: { plan: Plan; index: number }) {
   const content = (
     <div className="flex flex-1 flex-col">
       {/* <Icon className="size-11 text-zinc-900" strokeWidth={1.8} /> */}
@@ -125,7 +129,13 @@ function PlanCard({ plan }: { plan: Plan }) {
 
   if (plan.featured) {
     return (
-      <div className="flex flex-col rounded-[24px] border-2 border-[#18C595] bg-[#18C595] shadow-[0_30px_60px_-30px_rgba(24,197,149,0.45)] lg:-my-4">
+      <motion.div
+        initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.7, delay: index * 0.1, ease: EASE }}
+        className="flex h-full flex-col rounded-[24px] border-2 border-[#18C595] bg-[#18C595] shadow-[0_30px_60px_-30px_rgba(24,197,149,0.45)] lg:-my-4"
+      >
         <div
           className="flex items-center justify-center gap-1.5 rounded-t-[22px] py-2 text-xs font-medium text-white"
           style={{
@@ -140,14 +150,20 @@ function PlanCard({ plan }: { plan: Plan }) {
         <div className="flex flex-1 flex-col rounded-[22px] bg-white p-6">
           {content}
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="flex flex-col rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-900/5">
+    <motion.div
+      initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: EASE }}
+      className="flex h-full flex-col rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-900/5"
+    >
       {content}
-    </div>
+    </motion.div>
   );
 }
 
@@ -158,22 +174,24 @@ export function Pricing() {
       className="relative scroll-mt-20 bg-background px-4 py-12 sm:px-6 lg:px-8 lg:py-16"
     >
       <div className="mx-auto w-full max-w-5xl">
-        <div className="flex flex-col items-center text-center">
-          <span className="text-sm font-medium tracking-wide text-[#18C595] uppercase">
-            Pricing
-          </span>
-          <h2 className="font-albra mt-4 text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl">
-            Simple, honest pricing
-          </h2>
-          <p className="mt-4 max-w-lg text-base leading-7 text-primary/60">
-            Start free, upgrade when your group grows. No hidden fees, cancel
-            anytime.
-          </p>
-        </div>
+        <Reveal>
+          <div className="flex flex-col items-center text-center">
+            <span className="text-sm font-medium tracking-wide text-[#18C595] uppercase">
+              Pricing
+            </span>
+            <h2 className="font-albra mt-4 text-4xl font-semibold leading-tight tracking-tight text-primary sm:text-5xl">
+              Simple, honest pricing
+            </h2>
+            <p className="mt-4 max-w-lg text-base leading-7 text-primary/60">
+              Start free, upgrade when your group grows. No hidden fees, cancel
+              anytime.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-3">
-          {PLANS.map((plan) => (
-            <PlanCard key={plan.name} plan={plan} />
+          {PLANS.map((plan, i) => (
+            <PlanCard key={plan.name} plan={plan} index={i} />
           ))}
         </div>
       </div>
